@@ -10,7 +10,12 @@ public class Stato {
 		this.stato0 = stato0;
 		this.stato1 = stato1;
 	}
-
+ public Stato(Stato o){
+		uscita0 = o.uscita0;
+		uscita1 = o.uscita1;
+		stato0 = o.stato0;
+		stato1 = o.stato1;
+	}
 	@Override
 	public String toString() {
 		return "se riceve in input 1 restituisce: " + uscita1 + " e va nello stato " + stato1 + "\n" +
