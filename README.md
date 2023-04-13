@@ -1,1 +1,1 @@
-# Algoritmo_minimizzazione_automi-
+# Algoritmo_minimizzazione_automi
