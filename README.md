@@ -1,1 +1,1 @@
-# Algoritmo_minimizzazione_automi
+# Automi_a_stati_finiti
