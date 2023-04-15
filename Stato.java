@@ -10,7 +10,7 @@ public class Stato {
 		this.stato0 = stato0;
 		this.stato1 = stato1;
 	}
- public Stato(Stato o){
+ 	public Stato(Stato o){
 		uscita0 = o.uscita0;
 		uscita1 = o.uscita1;
 		stato0 = o.stato0;
@@ -33,5 +33,7 @@ public class Stato {
 		Stato s = (Stato) obj;
 		return this.uscita0 == s.uscita0 && this.uscita1 == s.uscita1 &&
 				this.stato0.equals(s.stato0) && this.stato1.equals(s.stato1);
-	}	
+	}
+	public boolean equivalente(){//TODO
+	}
 }
