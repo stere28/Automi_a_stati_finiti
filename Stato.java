@@ -1,27 +1,57 @@
-public class Stato {
-	private int uscita0;
-	private int uscita1;
-	private Stato stato0;
-	private Stato stato1;
+import java.util.*;
 
-	public Stato(int uscita0, int uscita1, Stato stato0, Stato stato1) {
-		this.uscita0 = uscita0;
-		this.uscita1 = uscita1;
-		this.stato0 = stato0;
-		this.stato1 = stato1;
+/**
+ * The type Stato.
+ */
+public class Stato {
+	private HashMap<String, Integer> zOutput;
+	private HashMap<String, Stato> statoOutput;
+
+	/**
+	 * METODO COSTRUTTORE.
+	 * @param zOutput Hash map:
+	 *                   key segnale di ingresso x
+	 *                   valore segnale d'uscita z
+	 * @param statoOutput Hash map:
+	 *                    key segnale di ingresso x
+	 *                    valore stato d'uscita statoOutput
+	 */
+	private Stato(HashMap<String, Integer> zOutput,HashMap<String, Stato> statoOutput) {
+		this.zOutput = zOutput;
+		this.statoOutput = statoOutput;
 	}
- 	public Stato(Stato o){
-		uscita0 = o.uscita0;
-		uscita1 = o.uscita1;
-		stato0 = o.stato0;
-		stato1 = o.stato1;
+
+	/**
+	 * Inizializza stato.
+	 * Un metodo statico che ci permette di creare un nuovo ogetto di tipo stato
+	 *
+	 * @param nX numero di segnali di ingresso
+	 * @return the stato
+	 */
+	public static Stato inizializza(double nX){
+		int nArchi = (int) Math.pow(2,nX);
+		HashMap<String, Integer> zOutput = new HashMap<>();
+		HashMap<String, Stato> statoOutput = new HashMap<>();
+		for(int i=0; i<nArchi; i++){
+			String bin = Integer.toBinaryString(i);
+			zOutput.put(bin,0);
+			statoOutput.put(bin,null);
+		}
+		return new Stato(zOutput,statoOutput);
+	}
+
+	/**
+	 * COPY COSTRUCTOR.
+	 *
+	 * @param s stato da copiare
+	 */
+	public Stato(Stato s){
+		//TODO
 	}
 	@Override
 	public String toString() {
-		return "se riceve in input 1 restituisce: " + uscita1 + " e va nello stato " + stato1 + "\n" +
-				"se riceve in input 0 restituisce: " + uscita0 + " e va nello stato " + stato0 + "\n";
+		//TODO
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null)
@@ -31,9 +61,73 @@ public class Stato {
 		if (!(obj instanceof Stato))
 			return false;
 		Stato s = (Stato) obj;
-		return this.uscita0 == s.uscita0 && this.uscita1 == s.uscita1 &&
-				this.stato0.equals(s.stato0) && this.stato1.equals(s.stato1);
+		return this.zOutput.equals(s.zOutput) && this.statoOutput.equals(s.statoOutput);
 	}
-	public boolean equivalente(){//TODO
+
+	/**
+	 * Gets zOutputs.
+	 *
+	 * @return the zOutputs
+	 */
+	public HashMap<String, Integer> getzOutput() {
+		return new HashMap<String, Integer>(zOutput);
+	}
+
+	/**
+	 * Gets statoOutputs.
+	 *
+	 * @return the statoOutputs
+	 */
+	public HashMap<String, Stato> getstatoOutput() {
+		return new HashMap<String, Stato>(statoOutput);
+	}
+
+	/**
+	 * Gets z.
+	 *
+	 * @param x segnale d'ingresso.
+	 * @return the z.
+	 */
+	public int getz(String x){
+		return zOutput.get(x);
+	}
+
+	/**
+	 * Set z.
+	 *
+	 * @param x the x
+	 * @param z the z
+	 */
+	public void setz(String x, int z){
+		zOutput.put(x,z);
+	}
+
+	/**
+	 * Getstato out stato.
+	 *
+	 * @param x the x
+	 * @return the stato
+	 */
+	public Stato getstatoOut(String x){
+		return statoOutput.get(x);
+	}
+
+	/**
+	 * Set stato out.
+	 *
+	 * @param x the x
+	 * @param s the s
+	 */
+	public void setstatoOut(String x, Stato s){
+		statoOutput.put(x,s);
+	}
+
+	/**
+	 * Equivalente boolean.
+	 *
+	 * @return the boolean
+	 */
+	public boolean equivalente(){
+		//TODO
 	}
 }
