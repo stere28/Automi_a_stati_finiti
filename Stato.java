@@ -4,6 +4,7 @@ import java.util.*;
  * The type Stato.
  */
 public class Stato {
+	private String nome;
 	private HashMap<String, Integer> zOutput;
 	private HashMap<String, Stato> statoOutput;
 
@@ -16,7 +17,8 @@ public class Stato {
 	 *                    key segnale di ingresso x
 	 *                    valore stato d'uscita statoOutput
 	 */
-	private Stato(HashMap<String, Integer> zOutput,HashMap<String, Stato> statoOutput) {
+	private Stato(String nome, HashMap<String,Integer> zOutput, HashMap<String, Stato> statoOutput) {
+		this.nome = nome;
 		this.zOutput = zOutput;
 		this.statoOutput = statoOutput;
 	}
@@ -25,10 +27,11 @@ public class Stato {
 	 * Inizializza stato.
 	 * Un metodo statico che ci permette di creare un nuovo ogetto di tipo stato
 	 *
-	 * @param nX numero di segnali di ingresso
+	 * @param nX   numero di segnali di ingresso
+	 * @param nome the nome
 	 * @return the stato
 	 */
-	public static Stato inizializza(double nX){
+	public static Stato inizializza(double nX, String nome){
 		int nArchi = (int) Math.pow(2,nX);
 		HashMap<String, Integer> zOutput = new HashMap<>();
 		HashMap<String, Stato> statoOutput = new HashMap<>();
@@ -37,7 +40,7 @@ public class Stato {
 			zOutput.put(bin,0);
 			statoOutput.put(bin,null);
 		}
-		return new Stato(zOutput,statoOutput);
+		return new Stato(nome, zOutput,statoOutput);
 	}
 
 	/**
@@ -46,11 +49,13 @@ public class Stato {
 	 * @param s stato da copiare
 	 */
 	public Stato(Stato s){
-		//TODO
+		this.nome = s.nome;
+		this.zOutput = new HashMap<>(s.zOutput);
+		this.statoOutput = new HashMap<>(s.statoOutput);
 	}
 	@Override
 	public String toString() {
-		//TODO
+		return this.nome + this.statoOutput.toString() + this.zOutput.toString();
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -61,7 +66,27 @@ public class Stato {
 		if (!(obj instanceof Stato))
 			return false;
 		Stato s = (Stato) obj;
-		return this.zOutput.equals(s.zOutput) && this.statoOutput.equals(s.statoOutput);
+		return this.nome.equals(s.nome) &&
+				this.zOutput.equals(s.zOutput) &&
+				this.statoOutput.equals(s.statoOutput);
+	}
+
+	/**
+	 * Set nome.
+	 *
+	 * @param nome the nome
+	 */
+	public void setNome(String nome){
+		this.nome = nome;
+	}
+
+	/**
+	 * Gets nome.
+	 *
+	 * @return the nome
+	 */
+	public String getNome() {
+		return nome;
 	}
 
 	/**
@@ -123,11 +148,39 @@ public class Stato {
 	}
 
 	/**
+	 * Get x set set.
+	 *
+	 * @return the set
+	 */
+	public Set<String> getXSet(){
+		return zOutput.keySet();
+	}
+
+	/**
 	 * Equivalente boolean.
 	 *
+	 * @param s the stato s
 	 * @return the boolean
 	 */
-	public boolean equivalente(){
-		//TODO
+	public boolean eequivalente(Stato s){
+		if(this.zDiverse(s)) return false;
+		if(this.equals(s)) return true;
+		return statoOutputEquivalenti(this,s);
+	}
+	private boolean zDiverse(Stato s){
+		for (String key : this.zOutput.keySet()) {
+			if(this.zOutput.get(key) != s.zOutput.get(key)) return true;
+		}
+		return false;
+	}
+	private static boolean statoOutputEquivalenti(Stato s1, Stato s2){
+		for (String key : s1.statoOutput.keySet()) {
+			Stato statoOutputS1 = s1.statoOutput.get(key);
+			Stato statoOutputS2 = s2.statoOutput.get(key);
+			if(statoOutputS1.equals(s2) && statoOutputS2.equals(s1)) continue;
+			if(statoOutputS1.equals(s1) && statoOutputS2.equals(s2)) continue;
+			if(!statoOutputS1.eequivalente(statoOutputS2)) return false;
+		}
+		return true;
 	}
 }
