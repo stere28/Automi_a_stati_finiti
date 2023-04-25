@@ -1,11 +1,12 @@
 public class Minimizzatore {
-    private int[][] giaEquivalenti;
-    private int[][] giaNotEquivalenti;
-    public Minimizzatore(int[][] giaEquivalenti, int[][] giaNotEquivalenti){
+    private boolean[][] giaEquivalenti;
+    private boolean[][] giaNotEquivalenti;
+    private String[] nomiStati;
+    Minimizzatore(boolean[][] giaEquivalenti, boolean[][] giaNotEquivalenti, String[] nomiStati){
         this.giaEquivalenti = giaEquivalenti;
-        this.giaNotEquivalenti = giaNotEquivalenti
+        this.giaNotEquivalenti = giaNotEquivalenti;
+        this.nomiStati = nomiStati;
     }
-
     public boolean eGiaEquivalente(Stato s1, Stato s2){
         //TODO
     }
@@ -18,5 +19,7 @@ public class Minimizzatore {
     public void setStatinotEquivalenti(Stato s1, Stato s2){
         //TODO
     }
-
+    public boolean eCompletato(){
+        //TODO
+    }
 }

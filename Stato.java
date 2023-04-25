@@ -162,7 +162,7 @@ public class Stato {
 	 * @param s the stato s
 	 * @return the boolean
 	 */
-	public boolean eequivalente(Stato s){
+	public boolean eEquivalente(Stato s){
 		if(this.zDiverse(s)) return false;
 		if(this.equals(s)) return true;
 		return statoOutputEquivalenti(this,s);
@@ -179,8 +179,41 @@ public class Stato {
 			Stato statoOutputS2 = s2.statoOutput.get(key);
 			if(statoOutputS1.equals(s2) && statoOutputS2.equals(s1)) continue;
 			if(statoOutputS1.equals(s1) && statoOutputS2.equals(s2)) continue;
-			if(!statoOutputS1.eequivalente(statoOutputS2)) return false;
+			if(!statoOutputS1.eEquivalente(statoOutputS2)) return false;
 		}
+		return true;
+	}
+	public boolean eEquivalente(Stato s, Minimizzatore m){
+		if(m.eGiaEquivalente(this, s)){
+			m.setStatiEquivalenti(this, s);
+			return true;
+		}
+		if(m.eGiaNotEquivalente(this, s)){
+			m.setStatinotEquivalenti(this, s);
+			return false;
+		}
+		if(this.zDiverse(s)){
+			m.setStatinotEquivalenti(this, s);
+			return false;
+		}
+		if(this.equals(s)){
+			m.setStatiEquivalenti(this, s);
+			return true;
+		}
+		return statoOutputEquivalenti(this, s, m);
+	}
+	private static boolean statoOutputEquivalenti(Stato s1, Stato s2,Minimizzatore m){
+		for (String key : s1.statoOutput.keySet()) {
+			Stato statoOutputS1 = s1.statoOutput.get(key);
+			Stato statoOutputS2 = s2.statoOutput.get(key);
+			if(statoOutputS1.equals(s2) && statoOutputS2.equals(s1)) continue;
+			if(statoOutputS1.equals(s1) && statoOutputS2.equals(s2)) continue;
+			if(!statoOutputS1.eEquivalente(statoOutputS2, m)){
+				m.setStatinotEquivalenti(s1,s2);
+				return false;
+			}
+		}
+		m.setStatiEquivalenti(s1,s2);
 		return true;
 	}
 }

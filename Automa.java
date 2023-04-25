@@ -8,12 +8,16 @@ public class Automa {
     public Automa(){
         this.stati = new LinkedList<>();
     }
-    /*public Automa(Automa a){
-        this.stati = copiaStati(a.stati);
+    public Automa(Automa a){
+        this(copiaStati(a.stati));
     }
-    private LinkedList<Stato> copiaStati(LinkedList<Stato> stati){
-        //TODO
-    }*/
+    private static LinkedList<Stato> copiaStati(LinkedList<Stato> stati){
+        LinkedList<Stato> ret = new LinkedList<>();
+        for(Stato stato: stati){
+            ret.add(new Stato(stato));
+        }
+        return ret;
+    }
     public static Automa inizializzaDaTerminale() {
         LinkedList<Stato> stati = new LinkedList<>();
         int nStatti = Terminale.richiediInt("Da quanti stati è composto l'automa? ");
@@ -32,11 +36,10 @@ public class Automa {
         }
         return new Automa(stati);
     }
-    /*
     @Override
     public String toString(){
         //TODO
-    }*/
+    }
     @Override
     public boolean equals(Object obj){
         if (obj == null)
@@ -48,4 +51,26 @@ public class Automa {
         Automa s = (Automa) obj;
         return this.stati.equals(s.stati);
     }
+    public Minimizzatore minimizzatore(){
+        int len = this.stati.size();
+        ListIterator<Stato> iter = this.stati.listIterator();
+        String[] nomiStati = new String[len];
+        boolean[][] giaEquivalenti = new boolean[len][len];
+        boolean[][] giaNotEquivalenti = new boolean[len][len];
+        for(int i=0; i<len && iter.hasNext(); i++){
+            nomiStati[i] = iter.next().getNome();
+            for(int j=0; j<len; j++){
+                giaEquivalenti[i][j] = false;
+                giaNotEquivalenti[i][j] = false;
+            }
+        }
+        return new Minimizzatore(giaEquivalenti,giaNotEquivalenti,nomiStati);
+    }
+    public void minimalizza(){
+        //TODO
+    }
+    public HashMap<String, String[]> classiEquivalenza(){
+        //TODO
+    }
+
 }
