@@ -35,11 +35,11 @@ public class Automa {
             }
         }
         return new Automa(stati);
-    }
+    }/*
     @Override
     public String toString(){
         //TODO
-    }
+    }*/
     @Override
     public boolean equals(Object obj){
         if (obj == null)
@@ -65,12 +65,31 @@ public class Automa {
             }
         }
         return new Minimizzatore(giaEquivalenti,giaNotEquivalenti,nomiStati);
-    }
-    public void minimalizza(){
+    }/*
+    public Automa minimalizza(){
         //TODO
-    }
-    public HashMap<String, String[]> classiEquivalenza(){
-        //TODO
+    }*/
+    public HashMap<String, LinkedList<String>> classiEquivalenza(){
+        HashMap<String, LinkedList<String>> ret = new HashMap<>();
+        Minimizzatore min = this.minimizzatore();
+        LinkedList<Stato> giaVisti = new LinkedList<>();
+        for(int i=0; i<stati.size(); i++){
+            if(giaVisti.indexOf(this.stati.get(i)) == -1){
+                for(int j=i+1; j<stati.size(); j++){
+                    if(this.stati.get(i).eEquivalente(this.stati.get(j),min)){
+                        giaVisti.add(this.stati.get(j));
+                        if(ret.containsKey(this.stati.get(i).getNome())){
+                            ret.get(this.stati.get(i).getNome()).add(this.stati.get(j).getNome());
+                        }
+                        else {
+                            ret.put(this.stati.get(i).getNome(), new LinkedList<>());
+                            ret.get(this.stati.get(i).getNome()).add(this.stati.get(j).getNome());
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
     }
 
 }
