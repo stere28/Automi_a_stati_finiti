@@ -1,3 +1,5 @@
+import terminale.Terminale;
+
 import java.util.*;
 
 /**
@@ -203,7 +205,9 @@ public class Stato {
 		return true;
 	}
 	private static boolean statoOutputEquivalenti(Stato s1, Stato s2,Minimizzatore m){
-		for (String key : s1.statoOutput.keySet()) {
+		ArrayList<String> keys = new ArrayList<>(s1.statoOutput.keySet());
+		Collections.shuffle(keys);
+		for (String key : keys) {
 			Stato statoOutputS1 = s1.statoOutput.get(key);
 			Stato statoOutputS2 = s2.statoOutput.get(key);
 			if(statoOutputS1.equals(s2) && statoOutputS2.equals(s1)) continue;

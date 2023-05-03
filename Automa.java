@@ -1,13 +1,30 @@
 import java.util.*;
 import terminale.Terminale;
-public class Automa {
+
+/**
+ * The type Automa.
+ */
+public class Automa{
+    /**
+     * The Stati.
+     */
     public LinkedList<Stato> stati;
     private Automa(LinkedList<Stato> stati){
         this.stati = stati;
     }
+
+    /**
+     * Instantiates a new Automa.
+     */
     public Automa(){
         this.stati = new LinkedList<>();
     }
+
+    /**
+     * Instantiates a new Automa.
+     *
+     * @param a the a
+     */
     public Automa(Automa a){
         this(copiaStati(a.stati));
     }
@@ -18,6 +35,12 @@ public class Automa {
         }
         return ret;
     }
+
+    /**
+     * Inizializza da terminale automa.
+     *
+     * @return the automa
+     */
     public static Automa inizializzaDaTerminale() {
         LinkedList<Stato> stati = new LinkedList<>();
         int nStatti = Terminale.richiediInt("Da quanti stati è composto l'automa? ");
@@ -32,6 +55,24 @@ public class Automa {
                 stato.setz(x, Terminale.richiediInt("Qual'è luscita dello stato " + stato.getNome() +
                         " all'ingresso " + x + "? "));
                 stato.setstatoOut(x, stati.get(Terminale.richiediInt("In quale stato andra? ")));
+            }
+        }
+        return new Automa(stati);
+    }
+    public static Automa inizializzaRandom() {
+        LinkedList<Stato> stati = new LinkedList<>();
+        int nStatti = Terminale.richiediInt("Da quanti stati è composto l'automa? ");
+        int nX = Terminale.richiediInt("Con quanti bit si codifica il segnale d'ingresso? ");
+        for (int i = 0; i < nStatti; i++) {
+            String nome = Terminale.richiediStringa("Qual'è il nome dello stato " + i + " ");
+            stati.add(Stato.inizializza(nX, nome));
+        }
+        Set<String> xSet = stati.get(0).getXSet();
+        Random random = new Random();
+        for (Stato stato : stati) {
+            for (String x : xSet) {
+                stato.setz(x, random.nextInt(2));
+                stato.setstatoOut(x, stati.get(random.nextInt(nStatti)));
             }
         }
         return new Automa(stati);
@@ -51,6 +92,12 @@ public class Automa {
         Automa s = (Automa) obj;
         return this.stati.equals(s.stati);
     }
+
+    /**
+     * Minimizzatore minimizzatore.
+     *
+     * @return the minimizzatore
+     */
     public Minimizzatore minimizzatore(){
         int len = this.stati.size();
         ListIterator<Stato> iter = this.stati.listIterator();
@@ -69,6 +116,12 @@ public class Automa {
     public Automa minimalizza(){
         //TODO
     }*/
+
+    /**
+     * Classi equivalenza hash map.
+     *
+     * @return the hash map
+     */
     public HashMap<String, LinkedList<String>> classiEquivalenza(){
         HashMap<String, LinkedList<String>> ret = new HashMap<>();
         Minimizzatore min = this.minimizzatore();
