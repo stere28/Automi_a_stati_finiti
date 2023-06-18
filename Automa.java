@@ -54,10 +54,18 @@ public class Automa{
             for (String x : xSet) {
                 stato.setz(x, Terminale.richiediInt("Qual'è luscita dello stato " + stato.getNome() +
                         " all'ingresso " + x + "? "));
-                stato.setstatoOut(x, stati.get(Terminale.richiediInt("In quale stato andra? ")));
+                stato.setstatoOut(x, stati.get(trovaPosizione(Terminale.richiediStringa("In quale stato andra? "), stati)));
             }
         }
         return new Automa(stati);
+    }
+    private static int trovaPosizione(String nome, LinkedList<Stato> stati){
+        int ret = 0;
+        for(Stato stato : stati){
+            if(nome.equals(stato.getNome())) return ret;
+            ret ++;
+        }
+        return ret;
     }
     public static Automa inizializzaRandom() {
         LinkedList<Stato> stati = new LinkedList<>();

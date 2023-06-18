@@ -170,6 +170,7 @@ public class Stato {
 		return statoOutputEquivalenti(this,s);
 	}
 	public boolean eEquivalente(Stato s, Minimizzatore m){
+		//Terminale.stampa(this.nome + s.nome);
 		if(m.eGiaEquivalente(this, s)){
 			m.setStatiEquivalenti(this, s);
 			return true;
